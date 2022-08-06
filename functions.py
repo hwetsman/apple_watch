@@ -45,4 +45,4 @@ files = ['DietarySugar', 'BodyMass', 'DietaryVitaminC',
          'WalkingStepLength', 'BodyFatPercentage', 'BasalEnergyBurned',
          'HeadphoneAudioExposureEvent', 'HeadphoneAudioExposure', 'DietaryFatSaturated']
 read_path = 'apple_health_export/export.xml'
-write_path = './apple_watch_data/'
+data_path = './apple_watch_data/'
