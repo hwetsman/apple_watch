@@ -36,11 +36,17 @@ def Show_Files():
         f'This subset is {df.shape[0]} rows long. It should take me {df.shape[0]/100} seconds to produce your graph...')
     df.value = df.value.astype(float)
     df.value = df.value.astype(float)
-    st.write(df)
+    # st.write(df)
+    type = df.loc[0, 'type'][24:]
+    length = df.shape[0]
+    unit = df.loc[0, 'unit']
     fig, ax = plt.subplots(figsize=(15, 8))
+    plt.title(f'{length} Points of Data on {type} Over Time',
+              fontdict={'fontsize': 24, 'fontweight': 10})
+    ax.set_ylabel(unit, fontdict={'fontsize': 20, 'fontweight': 10})
+    plt.xticks(rotation=70)
     plt.plot(df.creationDate, df.value)
     st.pyplot(fig)
-    st.write('I have drawn the fig')
     a.empty()
 
 
