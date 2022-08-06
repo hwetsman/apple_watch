@@ -33,7 +33,7 @@ def Show_Files():
     df = pd.read_csv(f'{data_path}{show_file}.csv')
     a = st.empty()
     a.write(
-        f'This subset is {df.shape[0]} rows long. It should take me {df.shape[0]/100} seconds to produce your graph')
+        f'This subset is {df.shape[0]} rows long. It should take me {df.shape[0]/100} seconds to produce your graph...')
     df.value = df.value.astype(float)
     df.value = df.value.astype(float)
     st.write(df)
@@ -41,6 +41,7 @@ def Show_Files():
     plt.plot(df.creationDate, df.value)
     st.pyplot(fig)
     st.write('I have drawn the fig')
+    a.empty()
 
 
 files = ['DietarySugar', 'BodyMass', 'DietaryVitaminC',
