@@ -14,6 +14,10 @@ def Get_Data(path_to_watch_data):
 
 
 def Set_Up():
+    if os.path.isdir('./apple_watch_data'):
+        pass
+    else:
+        os.path.mkdir('./apple_watch_data')
     function = st.sidebar.selectbox(
         'Choose a function', ['reset database', 'examine a subset'], index=1)
     if function == 'reset database':
