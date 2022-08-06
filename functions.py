@@ -24,8 +24,22 @@ def Set_Up():
         'Choose a function', ['reset database', 'examine a subset'], index=selector_index)
     if function == 'reset database':
         Reset_Database()
+
     elif function == 'examine a subset':
         Show_Files()
+
+
+def Reset_Database():
+    df = Get_Data('apple_health_export/export.xml')
+    # create datetime cols
+    for col in ['creationDate', 'startDate', 'endDate']:
+        df[col] = pd.to_datetime(df[col])
+    types = [x[24:] for x in list(set(df.type.tolist()))]
+    for type in types:
+        filter = type_stem+type
+        df1 = df[df.type == filter]
+        df1.to_csv(f'{data_path}{type}.csv', index=False)
+        st.write(f'I have written the file {type}.csv')
 
 
 def Show_Files():
