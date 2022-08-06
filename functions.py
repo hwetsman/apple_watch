@@ -28,6 +28,21 @@ def Set_Up():
         Show_Files()
 
 
+def Show_Files():
+    show_file = st.sidebar.selectbox(f'Pick one of {len(files)} file to examine', files, index=0)
+    df = pd.read_csv(f'{data_path}{show_file}.csv')
+    st.write('I have the df')
+    df.value = df.value.astype(float)
+    df.value = df.value.astype(float)
+    st.write('I have changed values to float')
+    st.write(df)
+    st.write(df.shape)
+    fig, ax = plt.subplots(figsize=(15, 8))
+    plt.plot(df.creationDate, df.value)
+    st.pyplot(fig)
+    st.write('I have drawn the fig')
+
+
 files = ['DietarySugar', 'BodyMass', 'DietaryVitaminC',
          'BloodGlucose', 'MindfulSession', 'AppleWalkingSteadiness',
          'HeartRateVariabilitySDNN', 'HeartRate', 'RestingHeartRate',
