@@ -19,10 +19,10 @@ def Set_Up():
     else:
         os.path.mkdir('./apple_watch_data')
     function = st.sidebar.selectbox(
-        'Choose a function', ['reset database', 'examine a subset'], index=1)
-    if function == 'reset database':
+        'Choose a function', ['Reset Database', 'Examine by Type'], index=1)
+    if function == 'rReset Database':
         Reset_Database()
-    elif function == 'examine a subset':
+    elif function == 'Examine by Type':
         Show_Files()
 
 
