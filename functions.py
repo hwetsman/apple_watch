@@ -15,14 +15,16 @@ def Get_Data(path_to_watch_data):
 
 def Set_Up():
     if os.path.isdir('./apple_watch_data'):
-        pass
+        selector_index = 1
     else:
         os.path.mkdir('./apple_watch_data')
+        st.write('I am setting up your data. This will take a few minutes.')
+        selector_index = 0
     function = st.sidebar.selectbox(
-        'Choose a function', ['Reset Database', 'Examine by Type'], index=1)
-    if function == 'rReset Database':
+        'Choose a function', ['reset database', 'examine a subset'], index=selector_index)
+    if function == 'reset database':
         Reset_Database()
-    elif function == 'Examine by Type':
+    elif function == 'examine a subset':
         Show_Files()
 
 
