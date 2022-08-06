@@ -46,3 +46,4 @@ files = ['DietarySugar', 'BodyMass', 'DietaryVitaminC',
          'HeadphoneAudioExposureEvent', 'HeadphoneAudioExposure', 'DietaryFatSaturated']
 read_path = 'apple_health_export/export.xml'
 data_path = './apple_watch_data/'
+type_stem = 'HKQuantityTypeIdentifier'
