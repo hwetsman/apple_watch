@@ -17,7 +17,7 @@ def Set_Up():
     if os.path.isdir('./apple_watch_data'):
         selector_index = 1
     else:
-        os.path.mkdir('./apple_watch_data')
+        os.mkdir('./apple_watch_data')
         st.write('I am setting up your data. This will take a few minutes.')
         selector_index = 0
     function = st.sidebar.selectbox(
