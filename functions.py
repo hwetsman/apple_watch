@@ -31,12 +31,12 @@ def Set_Up():
 def Show_Files():
     show_file = st.sidebar.selectbox(f'Pick one of {len(files)} file to examine', files, index=0)
     df = pd.read_csv(f'{data_path}{show_file}.csv')
-    st.write('I have the df')
+    a = st.empty()
+    a.write(
+        f'This subset is {df.shape[0]} rows long. It should take me {df.shape[0]/100} seconds to produce your graph')
     df.value = df.value.astype(float)
     df.value = df.value.astype(float)
-    st.write('I have changed values to float')
     st.write(df)
-    st.write(df.shape)
     fig, ax = plt.subplots(figsize=(15, 8))
     plt.plot(df.creationDate, df.value)
     st.pyplot(fig)
