@@ -12,6 +12,15 @@ def Get_Data(path_to_watch_data):
     return df
 
 
+def Set_Up():
+    function = st.sidebar.selectbox(
+        'Choose a function', ['reset database', 'examine a subset'], index=1)
+    if function == 'reset database':
+        Reset_Database()
+    elif function == 'examine a subset':
+        Show_Files()
+
+
 files = ['DietarySugar', 'BodyMass', 'DietaryVitaminC',
          'BloodGlucose', 'MindfulSession', 'AppleWalkingSteadiness',
          'HeartRateVariabilitySDNN', 'HeartRate', 'RestingHeartRate',
