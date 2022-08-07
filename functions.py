@@ -58,6 +58,8 @@ def Reset_Database():
         df1 = df[df.type == filter]
         if type == 'BloodGlucose':
             df1 = Fix_Glucose(df1)
+        elif type == 'FlightsClimbed':
+            df1 = Fix_Flights(df1)
         df1.to_csv(f'{data_path}{type}.csv', index=False)
         st.write(f'I have written the file {type}.csv')
 
