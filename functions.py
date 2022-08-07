@@ -38,6 +38,8 @@ def Reset_Database():
     for type in types:
         filter = type_stem+type
         df1 = df[df.type == filter]
+        if type == 'BloodGlucose':
+            df1 = Fix_Glucose(df1)
         df1.to_csv(f'{data_path}{type}.csv', index=False)
         st.write(f'I have written the file {type}.csv')
 
