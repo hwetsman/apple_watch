@@ -50,7 +50,7 @@ def Show_Files():
         f'This subset is {df.shape[0]} rows long. It should take me {df.shape[0]/100} seconds to produce your graph...')
     df.value = df.value.astype(float)
     df.value = df.value.astype(float)
-    # st.write(df)
+    st.write(df)
     type = df.loc[0, 'type'][24:]
     length = df.shape[0]
     unit = df.loc[0, 'unit']
@@ -62,6 +62,23 @@ def Show_Files():
     plt.plot(df.creationDate, df.value)
     st.pyplot(fig)
     a.empty()
+
+
+def Fix_Glucose(df):
+    df.creationDate = pd.to_datetime(df.creationDate)
+    df.creationDate = df.creationDate.dt.date
+    df.value = df.value.astype(int)
+    st.write('original', df)
+    df.drop(['sourceName', 'unit', 'startDate', 'endDate',
+            'sourceVersion', 'device'], axis=1, inplace=True)
+    st.write('after drop', df)
+    st.write(type(df.loc[0, 'creationDate']), type(df.loc[0, 'value']))
+    df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].mean())
+    df1['type'] = type_stem+'BloodGlucose'
+    df1['unit'] = 'mg/dl'
+    df1.reset_index(inplace=True, drop=False)
+    st.write('after groupby', type(df1), df1)
+    return df1
 
 
 files = ['DietarySugar', 'BodyMass', 'DietaryVitaminC',
