@@ -74,6 +74,7 @@ def Show_Files():
     df.value = df.value.astype(float)
     df.reset_index(inplace=True, drop=True)
     _type = df.loc[0, 'type'][24:]
+    unit = df.loc[0, 'unit']
     # set sliders for y scale
     y_scale_min = df.value.min()
     y_scale_max = df.value.max()
@@ -86,7 +87,7 @@ def Show_Files():
     st.write(df)
 
     length = df.shape[0]
-    unit = df.loc[0, 'unit']
+
     fig, ax = plt.subplots(figsize=(15, 8))
     plt.title(f'{length} Points of Data on {_type} Over Time',
               fontdict={'fontsize': 24, 'fontweight': 10})
