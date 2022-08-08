@@ -82,7 +82,7 @@ def Show_Files():
                               min_value=y_scale_min, max_value=y_scale_max, value=y_scale_min)
     y_max = st.sidebar.slider('Pick a max for the Y axis',
                               min_value=y_scale_min, max_value=y_scale_max, value=y_scale_max)
-
+    df = df[(df.value > y_min) & (df.value < y_max)]
     st.write(y_scale_min, type(y_scale_min), y_scale_max, type(y_scale_max))
     st.write(df)
 
