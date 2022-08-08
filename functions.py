@@ -84,6 +84,8 @@ def Reset_Database():
             df1 = Fix_Sugar(df1)
         elif type == 'DietaryVitaminC':
             df1 = Fix_VitC(df1)
+        elif type == 'HeartRate':
+            df1 = Fix_HeartRate(df1)
         df1.to_csv(f'{data_path}{type}.csv', index=False)
         st.write(f'I have written the file {type}.csv')
 
