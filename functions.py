@@ -86,6 +86,23 @@ def Reset_Database():
         st.write(f'I have written the file {type}.csv')
 
 
+def Fix_VitC(df):
+    df.creationDate = pd.to_datetime(df.creationDate)
+    df.creationDate = df.creationDate.dt.date
+    df.value = df.value.astype(float)
+    st.write('original', df)
+    df.drop(['sourceName', 'unit', 'startDate', 'endDate',
+            'sourceVersion', 'device'], axis=1, inplace=True)
+    st.write('after drop', df)
+    st.write(type(df.loc[0, 'creationDate']), type(df.loc[0, 'value']))
+    df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].sum())
+    df1['type'] = type_stem+'DeitaryVitaminC'
+    df1['unit'] = 'mg'
+    df1.reset_index(inplace=True, drop=False)
+    st.write('after groupby', type(df1), df1)
+    return df1
+
+
 def Show_Files():
     show_file = st.sidebar.selectbox(f'Pick one of {len(files)} file to examine', files, index=0)
     df = pd.read_csv(f'{data_path}{show_file}.csv')
