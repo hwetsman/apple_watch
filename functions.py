@@ -47,6 +47,24 @@ def Fix_Flights(df):
     return df1
 
 
+def Fix_Sugar(df):
+    df.creationDate = pd.to_datetime(df.creationDate)
+    df.creationDate = df.creationDate.dt.date
+    df.value = df.value.astype(float)
+    st.write('original', df)
+    df.drop(['sourceName', 'unit', 'startDate', 'endDate',
+            'sourceVersion', 'device'], axis=1, inplace=True)
+    st.write('after drop', df)
+    df.reset_index(inplace=True, drop=True)
+    st.write(type(df.loc[0, 'creationDate']), type(df.loc[0, 'value']))
+    df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].sum())
+    df1['type'] = type_stem+'DietarySugar'
+    df1['unit'] = 'g'
+    df1.reset_index(inplace=True, drop=False)
+    st.write('after groupby', type(df1), df1)
+    return df1
+
+
 def Reset_Database():
     df = Get_Data('apple_health_export/export.xml')
     # create datetime cols
@@ -62,6 +80,8 @@ def Reset_Database():
             df1 = Fix_Flights(df1)
         elif type == 'HeartRateVariabilitySDNN':
             df1 = Fix_HRV(df1)
+        elif type == 'DietarySugar':
+            df1 = FixSugar(df1)
         df1.to_csv(f'{data_path}{type}.csv', index=False)
         st.write(f'I have written the file {type}.csv')
 
