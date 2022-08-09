@@ -66,28 +66,32 @@ def Fix_Sugar(df):
 
 
 def Reset_Database():
+    a = st.empty()
     df = Get_Data('apple_health_export/export.xml')
-    # create datetime cols
-    for col in ['creationDate', 'startDate', 'endDate']:
-        df[col] = pd.to_datetime(df[col])
     types = [x[24:] for x in list(set(df.type.tolist()))]
+    types = [x if x != 'StepCount' else '_'+x for x in types]
+    # st.write(types)
     for type in types:
-        filter = type_stem+type
+        st.write(type)
+        if type == '_StepCount':
+            filter = type_stem+'StepCount'
+        else:
+            filter = type_stem+type
         df1 = df[df.type == filter]
-        if type == 'BloodGlucose':
-            df1 = Fix_Glucose(df1)
-        elif type == 'FlightsClimbed':
-            df1 = Fix_Flights(df1)
-        elif type == 'HeartRateVariabilitySDNN':
-            df1 = Fix_HRV(df1)
-        elif type == 'DietarySugar':
-            df1 = Fix_Sugar(df1)
-        elif type == 'DietaryVitaminC':
-            df1 = Fix_VitC(df1)
-        elif type == 'HeartRate':
-            df1 = Fix_HeartRate(df1)
-        df1.to_csv(f'{data_path}{type}.csv', index=False)
-        st.write(f'I have written the file {type}.csv')
+        a.write(
+            f'I am working {type} with {df1.shape[0]} rows. This will take about {df1.shape[0]/90000} secs.')
+        if df1.shape[0] > 0:
+            unit, measure, groupby_method = Read_Replace(type)
+            st.write(unit, measure, groupby_method)
+            for col in ['creationDate', 'startDate', 'endDate']:
+                df1[col] = pd.to_datetime(df1[col])
+            df1.reset_index(inplace=True, drop=True)
+            df1 = Fix_Show(df1, type, unit, measure, groupby_method)
+            df1.to_csv(f'{data_path}{type}.csv', index=False)
+        else:
+            pass
+    a.empty()
+    st.write('Done resetting data.')
 
 
 def Fix_VitC(df):
