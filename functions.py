@@ -198,6 +198,12 @@ def Fix_Glucose(df):
     return df1
 
 
+def Read_Replace(type):
+    replace_list = replace_dict.get(type)
+    unit, measure, groupby_method = replace_list[0], replace_list[1], replace_list[2]
+    return unit, measure, groupby_method
+
+
 files = ['DietarySugar', 'BodyMass', 'DietaryVitaminC',
          'BloodGlucose', 'MindfulSession', 'AppleWalkingSteadiness',
          'HeartRateVariabilitySDNN', 'HeartRate', 'RestingHeartRate',
