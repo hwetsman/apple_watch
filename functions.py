@@ -114,8 +114,10 @@ def Fix_VitC(df):
 
 def Show_Files():
     show_file = st.sidebar.selectbox(f'Pick one of {len(files)} file to examine', files, index=0)
-    df = pd.read_csv(f'{data_path}{show_file}.csv')
+    st.write(f'I will get {show_file}.')
     a = st.empty()
+    df = pd.read_csv(f'{data_path}{show_file}.csv')
+    st.write(f'I have gotten {show_file}')
     if df.shape[0] == 0:
         a.write('This subset has no data. Please choose another.')
     else:
@@ -123,7 +125,9 @@ def Show_Files():
             f'This subset is {df.shape[0]} rows long. It should take me {df.shape[0]/100} seconds to produce your graph...')
         df.value = df.value.astype(float)
         df.value = df.value.astype(float)
+        # df.creationDate = pd.to_datetime(df.creationDate)
         df.reset_index(inplace=True, drop=True)
+        df.sort_values('creationDate', inplace=True)
         _type = df.loc[0, 'type'][24:]
         unit = df.loc[0, 'unit']
         # set sliders for y scale
@@ -136,9 +140,7 @@ def Show_Files():
         df = df[(df.value > y_min) & (df.value < y_max)]
         st.write(y_scale_min, type(y_scale_min), y_scale_max, type(y_scale_max))
         st.write(df)
-
         length = df.shape[0]
-
         fig, ax = plt.subplots(figsize=(15, 8))
         plt.title(f'{length} Points of Data on {_type} Over Time',
                   fontdict={'fontsize': 24, 'fontweight': 10})
