@@ -95,6 +95,28 @@ def Reset_Database():
     st.write('Done resetting data.')
 
 
+def Fix_Show(df, var_type, unit, measure, groupby_method):
+    df.creationDate = pd.to_datetime(df.creationDate)
+    df.creationDate = df.creationDate.dt.date
+    df.reset_index(inplace=True, drop=True)
+    if measure == 'float':
+        df.value = df.value.astype(float)
+    elif measure == 'int':
+        df.value = df.value.astype(int)
+    df.drop(['sourceName', 'unit', 'startDate', 'endDate',
+            'sourceVersion', 'device'], axis=1, inplace=True)
+    df.reset_index(inplace=True, drop=True)
+    if groupby_method == 'mean':
+        df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].mean())
+    elif groupby_method == 'sum':
+        df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].sum())
+    df1['type'] = type_stem+var_type
+    df1['unit'] = unit
+    df1.reset_index(inplace=True, drop=False)
+    # st.write('after groupby', type(df1), df1)
+    return df1
+
+
 def Fix_VitC(df):
     df.creationDate = pd.to_datetime(df.creationDate)
     df.creationDate = df.creationDate.dt.date
