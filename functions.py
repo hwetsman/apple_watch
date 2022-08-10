@@ -16,6 +16,7 @@ def Get_Data(path_to_watch_data):
 def Set_Up():
     if os.path.isdir('./apple_watch_data'):
         selector_index = 1
+        st.write('You already have data. What would you like to do?')
     else:
         os.mkdir('./apple_watch_data')
         st.write('I am setting up your data. This will take a few minutes.')
@@ -24,7 +25,6 @@ def Set_Up():
         'Choose a function', ['reset database', 'examine a subset'], index=selector_index)
     if function == 'reset database':
         Reset_Database()
-
     elif function == 'examine a subset':
         Show_Files()
 
