@@ -67,23 +67,23 @@ def Fix_Sugar(df):
 
 def Reset_Database():
     a = st.empty()
-    a.st('Getting initial data...')
+    a.write('Getting initial data...')
     df = Get_Data('apple_health_export/export.xml')
     types = [x[24:] for x in list(set(df.type.tolist()))]
     types = [x if x != 'StepCount' else '_'+x for x in types]
     # st.write(types)
     for var_type in types:
-        st.write(var_type)
+        # st.write(var_type)
         if var_type == '_StepCount':
             filter = type_stem+'StepCount'
         else:
             filter = type_stem+var_type
         df1 = df[df.type == filter]
         a.write(
-            f'I am working {type} with {df1.shape[0]} rows. This will take about {df1.shape[0]/90000} secs.')
+            f'I am working {var_type} with {df1.shape[0]} rows. This will take about {df1.shape[0]/90000} secs.')
         if df1.shape[0] > 0:
             unit, measure, groupby_method = Read_Replace(var_type)
-            st.write(unit, measure, groupby_method)
+            # st.write(unit, measure, groupby_method)
             for col in ['creationDate', 'startDate', 'endDate']:
                 df1[col] = pd.to_datetime(df1[col])
             df1.reset_index(inplace=True, drop=True)
