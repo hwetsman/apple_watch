@@ -159,11 +159,32 @@ def Show_Files():
         df = df[(df.value > y_min) & (df.value < y_max)]
         length = df.shape[0]
         fig, ax = plt.subplots(figsize=(15, 8))
+
+        first_date = df.creationDate.min()
+        last_date = df.creationDate.max()
+        st.write(first_date, last_date)
+        X_df = pd.DataFrame(pd.date_range(first_date, last_date, freq='d'), columns=['date'])
+
+        X_df['trash'] = 0
+
+        df = df.rename(columns={'creationDate': 'date'})
+
+        X_df.date = pd.to_datetime(X_df.date)
+        df.date = pd.to_datetime(df.date)
+        X_df.set_index('date', drop=True, inplace=True)
+        df.set_index('date', drop=True, inplace=True)
+        st.write(X_df)
+        st.write(df)
+        plot_merge_X = pd.merge(X_df, df, right_index=True, left_index=True, how='outer')
+        plot_merge_X.reset_index(inplace=True, drop=False)
+        st.write(plot_merge_X)
+
         plt.title(f'{length} Points of Data on {_type} Over Time',
                   fontdict={'fontsize': 24, 'fontweight': 10})
         ax.set_ylabel(unit, fontdict={'fontsize': 20, 'fontweight': 10})
         plt.xticks(rotation=70)
-        plt.plot(df.creationDate, df.value)
+        # plt.plot(df.creationDate, df.value)
+        plt.plot(plot_merge_X.date, plot_merge_X.value)
         st.pyplot(fig)
         a.empty()
 
