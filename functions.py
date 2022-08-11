@@ -80,7 +80,7 @@ def Reset_Database():
             filter = type_stem+var_type
         df1 = df[df.type == filter]
         a.write(
-            f'I am working {var_type} with {df1.shape[0]} rows. This will take about {df1.shape[0]/90000} secs.')
+            f'I am working {var_type} with {df1.shape[0]} rows. This will take about {int(1+(df1.shape[0]/90000))} secs.')
         if df1.shape[0] > 0:
             unit, measure, groupby_method = Read_Replace(var_type)
             # st.write(unit, measure, groupby_method)
