@@ -189,6 +189,12 @@ def Show_Files():
         a.empty()
 
 
+def Get_Files():
+    files = os.listdir('./apple_watch_data')
+    files = sorted([x[:-4] for x in files])
+    return files
+
+
 def Fix_HeartRate(df):
     df.creationDate = pd.to_datetime(df.creationDate)
     df.creationDate = df.creationDate.dt.date
