@@ -103,16 +103,33 @@ def Fix_Show(df, var_type, unit, measure, groupby_method):
         df.value = df.value.astype(float)
     elif measure == 'int':
         df.value = df.value.astype(int)
-    df.drop(['sourceName', 'unit', 'startDate', 'endDate',
-            'sourceVersion', 'device'], axis=1, inplace=True)
-    df.reset_index(inplace=True, drop=True)
-    if groupby_method == 'mean':
-        df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].mean())
-    elif groupby_method == 'sum':
-        df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].sum())
-    df1['type'] = type_stem+var_type
-    df1['unit'] = unit
-    df1.reset_index(inplace=True, drop=False)
+    # df.drop(['sourceName', 'unit', 'startDate', 'endDate',
+    #         'sourceVersion', 'device'], axis=1, inplace=True)
+    # df.reset_index(inplace=True, drop=True)
+
+    if var_type == '_StepCount':
+        df.drop(['sourceName', 'unit', 'creationDate', 'endDate',
+                'sourceVersion', 'device'], axis=1, inplace=True)
+        df.reset_index(inplace=True, drop=True)
+        df1 = pd.DataFrame(df.groupby(by='startDate')['value'].sum())
+        df1['type'] = type_stem+var_type
+        df1['unit'] = unit
+        df1.reset_index(inplace=True, drop=False)
+        df1 = df1.rename(columns={'startDate': 'date'})
+        st.write(df1)
+    else:
+        df.drop(['sourceName', 'unit', 'startDate', 'endDate',
+                'sourceVersion', 'device'], axis=1, inplace=True)
+        df.reset_index(inplace=True, drop=True)
+
+        if groupby_method == 'mean':
+            df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].mean())
+        elif groupby_method == 'sum':
+            df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].sum())
+        df1['type'] = type_stem+var_type
+        df1['unit'] = unit
+        df1.reset_index(inplace=True, drop=False)
+        df1 = df1.rename(columns={'creationDate': 'date'})
     # st.write('after groupby', type(df1), df1)
     return df1
 
