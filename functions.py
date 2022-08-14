@@ -152,7 +152,7 @@ def Fix_VitC(df):
 
 
 def Show_Files():
-    show_file = st.sidebar.selectbox(f'Pick one of {len(files)} file to examine', files, index=0)
+    show_file = st.sidebar.selectbox(f'Pick one of {len(files)} file to examine', files, index=1)
     a = st.empty()
     df = pd.read_csv(f'{data_path}{show_file}.csv')
     if df.shape[0] == 0:
@@ -162,40 +162,42 @@ def Show_Files():
             f'This subset is {df.shape[0]} rows long. It should take me {df.shape[0]/100} seconds to produce your graph...')
         df.value = df.value.astype(float)
         df.value = df.value.astype(float)
+
         df.reset_index(inplace=True, drop=True)
-        df.sort_values('creationDate', inplace=True)
+        # df.sort_values('creationDate', inplace=True)
+        df.sort_values('date', inplace=True)
+        # st.write(df)
         _type = df.loc[0, 'type'][24:]
         unit = df.loc[0, 'unit']
         # set sliders for y scale
         y_scale_min = df.value.min()
         y_scale_max = df.value.max()
+        # st.write(y_scale_min, y_scale_max)
         y_min = st.sidebar.slider('Pick a min for the Y axis',
                                   min_value=y_scale_min, max_value=y_scale_max, value=y_scale_min)
         y_max = st.sidebar.slider('Pick a max for the Y axis',
                                   min_value=y_scale_min, max_value=y_scale_max, value=y_scale_max)
-        df = df[(df.value > y_min) & (df.value < y_max)]
+        df = df[(df.value >= y_min) & (df.value <= y_max)]
+        # st.write(df)
         length = df.shape[0]
         fig, ax = plt.subplots(figsize=(15, 8))
-
-        first_date = df.creationDate.min()
-        last_date = df.creationDate.max()
-        st.write(first_date, last_date)
+        # st.write(df)
+        # first_date = df.creationDate.min()
+        # last_date = df.creationDate.max()
+        first_date = df.date.min()
+        last_date = df.date.max()
         X_df = pd.DataFrame(pd.date_range(first_date, last_date, freq='d'), columns=['date'])
 
         X_df['trash'] = 0
 
-        df = df.rename(columns={'creationDate': 'date'})
+        # df = df.rename(columns={'creationDate': 'date'})
 
         X_df.date = pd.to_datetime(X_df.date)
         df.date = pd.to_datetime(df.date)
         X_df.set_index('date', drop=True, inplace=True)
         df.set_index('date', drop=True, inplace=True)
-        st.write(X_df)
-        st.write(df)
         plot_merge_X = pd.merge(X_df, df, right_index=True, left_index=True, how='outer')
         plot_merge_X.reset_index(inplace=True, drop=False)
-        st.write(plot_merge_X)
-
         plt.title(f'{length} Points of Data on {_type} Over Time',
                   fontdict={'fontsize': 24, 'fontweight': 10})
         ax.set_ylabel(unit, fontdict={'fontsize': 20, 'fontweight': 10})
