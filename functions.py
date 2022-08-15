@@ -110,7 +110,8 @@ def Fix_Show(df, var_type, unit, measure, groupby_method):
     #         'sourceVersion', 'device'], axis=1, inplace=True)
     # df.reset_index(inplace=True, drop=True)
 
-    if var_type == '_StepCount':
+    # if var_type == '_StepCount':
+    if var_type == 'StepCount':
         df.drop(['sourceName', 'unit', 'creationDate', 'endDate',
                 'sourceVersion', 'device'], axis=1, inplace=True)
         df.reset_index(inplace=True, drop=True)
@@ -119,7 +120,7 @@ def Fix_Show(df, var_type, unit, measure, groupby_method):
         df1['unit'] = unit
         df1.reset_index(inplace=True, drop=False)
         df1 = df1.rename(columns={'startDate': 'date'})
-        st.write(df1)
+        # st.write(df1)
     else:
         df.drop(['sourceName', 'unit', 'startDate', 'endDate',
                 'sourceVersion', 'device'], axis=1, inplace=True)
