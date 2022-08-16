@@ -166,36 +166,24 @@ def Show_Files():
             f'This subset is {df.shape[0]} rows long. It should take me {df.shape[0]/100} seconds to produce your graph...')
         df.value = df.value.astype(float)
         df.value = df.value.astype(float)
-
         df.reset_index(inplace=True, drop=True)
-        # df.sort_values('creationDate', inplace=True)
         df.sort_values('date', inplace=True)
-        # st.write(df)
         _type = df.loc[0, 'type'][24:]
         unit = df.loc[0, 'unit']
         # set sliders for y scale
         y_scale_min = df.value.min()
         y_scale_max = df.value.max()
-        # st.write(y_scale_min, y_scale_max)
         y_min = st.sidebar.slider('Pick a min for the Y axis',
                                   min_value=y_scale_min, max_value=y_scale_max, value=y_scale_min)
         y_max = st.sidebar.slider('Pick a max for the Y axis',
                                   min_value=y_scale_min, max_value=y_scale_max, value=y_scale_max)
         df = df[(df.value >= y_min) & (df.value <= y_max)]
-        # st.write(df)
         length = df.shape[0]
         fig, ax = plt.subplots(figsize=(15, 8))
-        # st.write(df)
-        # first_date = df.creationDate.min()
-        # last_date = df.creationDate.max()
         first_date = df.date.min()
         last_date = df.date.max()
         X_df = pd.DataFrame(pd.date_range(first_date, last_date, freq='d'), columns=['date'])
-
         X_df['trash'] = 0
-
-        # df = df.rename(columns={'creationDate': 'date'})
-
         X_df.date = pd.to_datetime(X_df.date)
         df.date = pd.to_datetime(df.date)
         X_df.set_index('date', drop=True, inplace=True)
@@ -206,7 +194,6 @@ def Show_Files():
                   fontdict={'fontsize': 24, 'fontweight': 10})
         ax.set_ylabel(unit, fontdict={'fontsize': 20, 'fontweight': 10})
         plt.xticks(rotation=70)
-        # plt.plot(df.creationDate, df.value)
         plt.plot(plot_merge_X.date, plot_merge_X.value)
         st.pyplot(fig)
         a.empty()
