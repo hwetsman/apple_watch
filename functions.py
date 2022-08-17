@@ -44,7 +44,6 @@ def Reset_Database():
             for col in ['creationDate', 'startDate', 'endDate']:
                 df1[col] = pd.to_datetime(df1[col])
             df1.reset_index(inplace=True, drop=True)
-            # Test_Dates(df1)
             df1 = Fix_Show(df1, var_type, unit, measure, groupby_method)
             df1.to_csv(f'{data_path}{var_type}.csv', index=False)
 
@@ -62,11 +61,6 @@ def Fix_Show(df, var_type, unit, measure, groupby_method):
         df.value = df.value.astype(float)
     elif measure == 'int':
         df.value = df.value.astype(int)
-    # df.drop(['sourceName', 'unit', 'startDate', 'endDate',
-    #         'sourceVersion', 'device'], axis=1, inplace=True)
-    # df.reset_index(inplace=True, drop=True)
-
-    # if var_type == '_StepCount':
     if var_type == 'StepCount':
         df.drop(['sourceName', 'unit', 'creationDate', 'endDate',
                 'sourceVersion', 'device'], axis=1, inplace=True)
@@ -76,7 +70,6 @@ def Fix_Show(df, var_type, unit, measure, groupby_method):
         df1['unit'] = unit
         df1.reset_index(inplace=True, drop=False)
         df1 = df1.rename(columns={'startDate': 'date'})
-        # st.write(df1)
     else:
         df.drop(['sourceName', 'unit', 'startDate', 'endDate',
                 'sourceVersion', 'device'], axis=1, inplace=True)
@@ -90,7 +83,6 @@ def Fix_Show(df, var_type, unit, measure, groupby_method):
         df1['unit'] = unit
         df1.reset_index(inplace=True, drop=False)
         df1 = df1.rename(columns={'creationDate': 'date'})
-    # st.write('after groupby', type(df1), df1)
     return df1
 
 
