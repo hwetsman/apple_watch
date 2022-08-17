@@ -163,22 +163,6 @@ def Read_Replace(type):
     return unit, measure, groupby_method
 
 
-# files = ['DietarySugar', 'BodyMass', 'DietaryVitaminC',
-#          'BloodGlucose', 'MindfulSession', 'AppleWalkingSteadiness',
-#          'HeartRateVariabilitySDNN', 'HeartRate', 'RestingHeartRate',
-#          'FlightsClimbed', 'DietarySodium', 'LeanBodyMass',
-#          'WalkingSpeed', 'DietaryFatTotal', 'WalkingDoubleSupportPercentage',
-#          'Height', 'DistanceWalkingRunning', 'VO2Max', 'AudioExposureEvent',
-#          'WalkingAsymmetryPercentage', 'DietaryPotassium', 'BloodPressureSystolic',
-#          'DietaryCarbohydrates', 'AppleExerciseTime', 'WalkingHeartRateAverage',
-#          'AppleStandHour', 'BodyMassIndex', 'DietaryEnergyConsumed',
-#          'DietaryCholesterol', 'EnvironmentalAudioExposure', 'SleepAnalysis',
-#          'DietaryCalcium', 'AppleStandTime', 'DietaryFatPolyunsaturated',
-#          'ActiveEnergyBurned', 'DietaryProtein', 'DietaryIron',
-#          'BloodPressureDiastolic', 'DietaryFiber', 'RespiratoryRate',
-#          'DietaryFatMonounsaturated', 'StepCount', 'SixMinuteWalkTestDistance',
-#          'WalkingStepLength', 'BodyFatPercentage', 'BasalEnergyBurned',
-#          'HeadphoneAudioExposureEvent', 'HeadphoneAudioExposure', 'DietaryFatSaturated']
 replace_dict = {'AppleWalkingSteadiness': ['%', 'float', 'mean'], 'WalkingSpeed': ['mi/hr', 'float', 'mean'],
                 'BloodPressureSystolic': ['mmHg', 'int', 'mean'], 'WalkingAsymmetryPercentage': ['%', 'float', 'mean'],
                 'WalkingStepLength': ['in', 'float', 'mean'], 'SixMinuteWalkTestDistance': ['m', 'int', 'mean'],
