@@ -157,23 +157,6 @@ def Get_Files():
     return files
 
 
-def Fix_Glucose(df):
-    df.creationDate = pd.to_datetime(df.creationDate)
-    df.creationDate = df.creationDate.dt.date
-    df.value = df.value.astype(int)
-    st.write('original', df)
-    df.drop(['sourceName', 'unit', 'startDate', 'endDate',
-            'sourceVersion', 'device'], axis=1, inplace=True)
-    st.write('after drop', df)
-    st.write(type(df.loc[0, 'creationDate']), type(df.loc[0, 'value']))
-    df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].mean())
-    df1['type'] = type_stem+'BloodGlucose'
-    df1['unit'] = 'mg/dl'
-    df1.reset_index(inplace=True, drop=False)
-    st.write('after groupby', type(df1), df1)
-    return df1
-
-
 def Read_Replace(type):
     replace_list = replace_dict.get(type)
     unit, measure, groupby_method = replace_list[0], replace_list[1], replace_list[2]
