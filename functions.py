@@ -168,8 +168,6 @@ def Show_Files():
         df.value = df.value.astype(float)
         df.reset_index(inplace=True, drop=True)
         df.sort_values('date', inplace=True)
-        _type = df.loc[0, 'type'][24:]
-        unit = df.loc[0, 'unit']
         # set sliders for y scale
         y_scale_min = df.value.min()
         y_scale_max = df.value.max()
@@ -178,25 +176,29 @@ def Show_Files():
         y_max = st.sidebar.slider('Pick a max for the Y axis',
                                   min_value=y_scale_min, max_value=y_scale_max, value=y_scale_max)
         df = df[(df.value >= y_min) & (df.value <= y_max)]
-        length = df.shape[0]
-        fig, ax = plt.subplots(figsize=(15, 8))
-        first_date = df.date.min()
-        last_date = df.date.max()
-        X_df = pd.DataFrame(pd.date_range(first_date, last_date, freq='d'), columns=['date'])
-        X_df['trash'] = 0
-        X_df.date = pd.to_datetime(X_df.date)
-        df.date = pd.to_datetime(df.date)
-        X_df.set_index('date', drop=True, inplace=True)
-        df.set_index('date', drop=True, inplace=True)
-        plot_merge_X = pd.merge(X_df, df, right_index=True, left_index=True, how='outer')
-        plot_merge_X.reset_index(inplace=True, drop=False)
-        plt.title(f'{length} Points of Data on {_type} Over Time',
-                  fontdict={'fontsize': 24, 'fontweight': 10})
-        ax.set_ylabel(unit, fontdict={'fontsize': 20, 'fontweight': 10})
-        plt.xticks(rotation=70)
-        plt.plot(plot_merge_X.date, plot_merge_X.value)
+        fig = Create_Fig(df)
         st.pyplot(fig)
         a.empty()
+
+
+def Create_Fig(df):
+    fig, ax = plt.subplots(figsize=(15, 8))
+    first_date = df.date.min()
+    last_date = df.date.max()
+    X_df = pd.DataFrame(pd.date_range(first_date, last_date, freq='d'), columns=['date'])
+    X_df['trash'] = 0
+    X_df.date = pd.to_datetime(X_df.date)
+    df.date = pd.to_datetime(df.date)
+    X_df.set_index('date', drop=True, inplace=True)
+    df.set_index('date', drop=True, inplace=True)
+    plot_merge_X = pd.merge(X_df, df, right_index=True, left_index=True, how='outer')
+    plot_merge_X.reset_index(inplace=True, drop=False)
+    plt.title(f'{length} Points of Data on {_type} Over Time',
+              fontdict={'fontsize': 24, 'fontweight': 10})
+    ax.set_ylabel(unit, fontdict={'fontsize': 20, 'fontweight': 10})
+    plt.xticks(rotation=70)
+    plt.plot(plot_merge_X.date, plot_merge_X.value)
+    return fig
 
 
 def Get_Files():
