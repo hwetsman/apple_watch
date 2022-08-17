@@ -29,42 +29,6 @@ def Set_Up():
         Show_Files()
 
 
-def Fix_Flights(df):
-    df.creationDate = pd.to_datetime(df.creationDate)
-    df.creationDate = df.creationDate.dt.date
-    df.value = df.value.astype(int)
-    st.write('original', df)
-    df.drop(['sourceName', 'unit', 'startDate', 'endDate',
-            'sourceVersion', 'device'], axis=1, inplace=True)
-    st.write('after drop', df)
-    df.reset_index(inplace=True, drop=True)
-    st.write(type(df.loc[0, 'creationDate']), type(df.loc[0, 'value']))
-    df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].sum())
-    df1['type'] = type_stem+'FlightsClimbed'
-    df1['unit'] = 'count'
-    df1.reset_index(inplace=True, drop=False)
-    st.write('after groupby', type(df1), df1)
-    return df1
-
-
-def Fix_Sugar(df):
-    df.creationDate = pd.to_datetime(df.creationDate)
-    df.creationDate = df.creationDate.dt.date
-    df.value = df.value.astype(float)
-    st.write('original', df)
-    df.drop(['sourceName', 'unit', 'startDate', 'endDate',
-            'sourceVersion', 'device'], axis=1, inplace=True)
-    st.write('after drop', df)
-    df.reset_index(inplace=True, drop=True)
-    st.write(type(df.loc[0, 'creationDate']), type(df.loc[0, 'value']))
-    df1 = pd.DataFrame(df.groupby(by="creationDate")['value'].sum())
-    df1['type'] = type_stem+'DietarySugar'
-    df1['unit'] = 'g'
-    df1.reset_index(inplace=True, drop=False)
-    st.write('after groupby', type(df1), df1)
-    return df1
-
-
 def Reset_Database():
     a = st.empty()
     a.write('Getting initial data...')
