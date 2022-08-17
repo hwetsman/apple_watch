@@ -182,6 +182,9 @@ def Show_Files():
 
 
 def Create_Fig(df):
+    length = df.shape[0]
+    _type = df.loc[0, 'type'][24:]
+    unit = df.loc[0, 'unit']
     fig, ax = plt.subplots(figsize=(15, 8))
     first_date = df.date.min()
     last_date = df.date.max()
