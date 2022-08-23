@@ -71,8 +71,8 @@ def Reset_Database():
 
 
 def Fix_Show(df, var_type, unit, measure, groupby_method):
-    df.creationDate = pd.to_datetime(df.creationDate)
-    df.creationDate = df.creationDate.dt.date
+    df.startDate = pd.to_datetime(df.startDate)
+    df.startDate = df.startDate.dt.date
     df.reset_index(inplace=True, drop=True)
     if measure == 'float':
         df.value = df.value.astype(float)
