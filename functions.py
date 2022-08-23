@@ -17,6 +17,8 @@ def Set_Up():
     if os.path.isdir('./apple_watch_data'):
         selector_index = 1
         st.write('You already have data. What would you like to do?')
+        global files
+        files = Get_Files()
     else:
         os.mkdir('./apple_watch_data')
         st.write('I am setting up your data. This will take a few minutes.')
