@@ -35,8 +35,26 @@ def Reset_Database():
     df = Get_Data('apple_health_export/export.xml')
     types = [x[24:] for x in list(set(df.type.tolist()))]
     for var_type in types:
+
         filter = type_stem+var_type
         df1 = df[df.type == filter]
+        if var_type == 'StepCount':
+            a.write('Select source of step count...')
+            # show_df = df1['device']
+            has_device = df1[~df1.device.isna()]
+            watch_steps = has_device[has_device.device.str.contains('Apple Watch')]
+            phone_steps = has_device[has_device.device.str.contains('iPhone')]
+            step_source = st.sidebar.radio('Select source of steps', ['Watch', 'Phone'])
+            if step_source == 'Watch':
+                df1 = watch_steps.copy()
+            elif step_source == 'Phone':
+                df1 = phone_steps.copy()
+            st.write(watch_steps)
+            # st.write(phone_steps)
+        elif var_type == 'BloodGlucose':
+            st.write(df1)
+        else:
+            pass
         a.write(
             f'I am working {var_type} with {df1.shape[0]} rows. This will take about {int(1+(df1.shape[0]/90000))} secs.')
         if df1.shape[0] > 0:
@@ -46,7 +64,6 @@ def Reset_Database():
             df1.reset_index(inplace=True, drop=True)
             df1 = Fix_Show(df1, var_type, unit, measure, groupby_method)
             df1.to_csv(f'{data_path}{var_type}.csv', index=False)
-
         else:
             pass
     a.empty()
